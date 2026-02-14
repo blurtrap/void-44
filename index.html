@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOID-44 | Minecraft Anarchy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Замени ссылку в src на свое лого, если есть -->
+            <img src="VOID-44logo.png" alt="VOID-44" class="logo">
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li id="nav-home" class="active"><a href="#" onclick="showPage('home')">Home</a></li>
+                <li id="nav-bedrock"><a href="#" onclick="showPage('bedrock')">Bedrock</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-grid">
+            <main class="content-area">
+                <!-- СТРАНИЦА HOME -->
+                <div id="page-home">
+                    <div class="slider-placeholder">
+                        <img src="image.png"
+                            alt="Survival">
+                    </div>
+                    <article class="post">
+                        <span class="date">Февраль 2026</span>
+                        <h2>Добро пожаловать на VOID-44</h2>
+                        <p>Сервер создан для людей, кто хочет выживать и играть с компанией. Здесь вы найдете дух
+                            настоящей свободы и хардкора.</p>
+                        <p><strong>Особенности:</strong> На сервере доступна <b>только одна булава</b> на весь мир.
+                            Сможешь ли ты стать её владельцем?</p>
+                        <p>Версия: 1.8 - 1.21.10. Установлен мощный античит. Короче, обычная честная анархия.</p>
+                        <p>Также на сервере присутвует voicechat, тоесть возможность общаться с игроками прямо в игре,
+                            вам нужно поставить </p>
+                        <p>Вот мод для добавлении голосового чата в игру: <a
+                                href="https://minecraft-inside.ru/mods/185344-simple-voice-chat.html?ysclid=mlbakjqm5k102930820">тык</a>
+                        </p>
+                    </article>
+                </div>
+
+                <!-- СТРАНИЦА BEDROCK -->
+                <div id="page-bedrock" style="display: none;">
+                    <article class="post">
+                        <h2>Вход с Bedrock Edition</h2>
+                        <p>Наш сервер поддерживает кросс-платформенную игру! Вы можете зайти к нам как с ПК, так и с
+                            мобильных устройств или консолей.</p>
+                        <div class="ip-block" style="margin-top: 20px;">
+                            <p>Данные для входа:</p>
+                            <code>IP: donator37.gamely.pro<br>PORT: 20545</code>
+                        </div>
+                    </article>
+                </div>
+            </main>
+            <aside class="sidebar">
+                <div class="server-status">
+                    <p class="server-label">VOID-44 (Anarchy server)</p>
+                    <p class="server-desc">Мир без границ и правил. Выживай, строй, доминируй.</p>
+                    <aside class="sidebar">
+                        <div class="server-status">
+                            <p class="server-label">LIVE STATISTICS</p>
+                            <!-- График мониторинга -->
+                            <div class="chart-container"
+                                style="margin-top: 15px; border: 1px solid #444; background: #000;">
+                                <iframe src="https://misterlauncher.org/server_chart/95955/" width="100%" height="300"
+                                    frameborder="0"
+                                    style="display: block; filter: invert(0.9) hue-rotate(100deg) brightness(0.8);">
+                                </iframe>
+                            </div>
+                            <div class="ip-block" style="margin-top: 15px;">
+                                <p style="font-size: 10px; color: #666; margin-bottom: 5px;">SERVER ADDRESS:</p>
+                                <code>DONATOR37.GAMELY.PRO:20545</code>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="ip-block">
+                        <code>Нажми на IP, чтобы скопировать:</code>
+                        <p>
+                            <a href="javascript:void(0)" class="pp1" onclick="copyIP('DONATOR37.GAMELY.PRO:20545')">
+                                DONATOR37.GAMELY.PRO:20545
+                            </a>
+                        </p>
+                        <!-- Место для надписи "Скопировано!" -->
+                        <div id="copy-status" class="copy-hint"></div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        function copyIP(text) {
+            const status = document.getElementById('copy-status');
+
+            navigator.clipboard.writeText(text).then(() => {
+                // Устанавливаем текст и показываем его
+                status.innerText = "IP адрес скопирован!";
+                status.classList.add('show');
+
+                // Через 2 секунды скрываем надпись
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                console.error('Ошибка копирования: ', err);
+            });
+        }
+    </script>
+
+    <script>
+        function showPage(page) {
+            document.getElementById('page-home').style.display = (page === 'home') ? 'block' : 'none';
+            document.getElementById('page-bedrock').style.display = (page === 'bedrock') ? 'block' : 'none';
+
+            document.getElementById('nav-home').classList.toggle('active', page === 'home');
+            document.getElementById('nav-bedrock').classList.toggle('active', page === 'bedrock');
+        }
+    </script>
+</body>
+
+<script>
+    async function updateOnline() {
+        // Указываем IP без порта для API (порт 20545 оно подхватит само или проверит стандартный)
+        // Если не сработает, попробуй 'donator37.gamely.pro:20545'
+        const ip = 'donator37.gamely.pro:20545';
+        const statusElement = document.getElementById('player-count');
+
+        try {
+            // Используем более стабильное API mc-api.net или mcsrvstat.us
+            const response = await fetch(`https://api.mcsrvstat.us{ip}`);
+            const data = await response.json();
+
+            if (data.online === true) {
+                // Если сервер в сети, пишем число игроков
+                statusElement.innerText = data.players.online;
+                statusElement.parentElement.style.color = '#8bc34a'; // Зеленый если онлайн
+            } else {
+                // Если сервер выключен
+                statusElement.innerText = '0';
+                statusElement.parentElement.style.color = '#ff4444'; // Красный если оффлайн
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            statusElement.innerText = 'Offline';
+        }
+    }
+
+    // Вызываем сразу при загрузке
+    updateOnline();
+
+    // Обновляем раз в 1 минуту (не ставь слишком часто, чтобы API не заблокировало сайт)
+    setInterval(updateOnline, 60000);
+</script>
+
+</html>
